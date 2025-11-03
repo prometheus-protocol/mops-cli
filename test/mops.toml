@@ -4,6 +4,7 @@ prng = "0.0.5"
 splay = "https://github.com/chenyan2002/motoko-splay.git"
 base_local = "../../motoko-base"
 candb = "1.0.8"
+"core@1" = "1.0.0"
 
 [[canister]]
 name = "backend"
@@ -11,4 +12,3 @@ canister_id = "um5iw-rqaaa-aaaaq-qaaba-cai"
 
 [[canister]]
 canister_id = "ryjl3-tyaaa-aaaaa-aaaba-cai"
-

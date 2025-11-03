@@ -6,6 +6,6 @@ import DB "mo:candb/CanDB";
 //import IC "ic:aaaaa-aa";
 import Ledger "ic:ryjl3-tyaaa-aaaaa-aaaba-cai";
 import Named "canister:backend";
+import Iter "mo:core@1/Iter";
 
-actor {
-}
+persistent actor {};

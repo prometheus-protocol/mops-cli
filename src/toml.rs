@@ -22,6 +22,10 @@ use std::path::{Path, PathBuf};
 use std::rc::Rc;
 use toml_edit::{value, DocumentMut, ImDocument};
 
+fn dep_base(name: &str) -> String {
+    name.split('@').next().unwrap_or(name).to_string()
+}
+
 #[derive(Debug, Serialize, Deserialize)]
 struct Package {
     name: String,
@@ -88,7 +92,10 @@ pub async fn update_mops_toml(
                 if doc["dependencies"].get(&lib).is_some() {
                     continue;
                 }
-                let version = service.get_highest_version(&lib).await?.into_result();
+                let version = service
+                    .get_highest_version(&dep_base(&lib))
+                    .await?
+                    .into_result();
                 match version {
                     Ok(version) => {
                         println(
@@ -211,7 +218,7 @@ async fn update_mops_lock(agent: &Agent, env: &Env) -> Result<()> {
                     continue;
                 }
                 let pkg = service
-                    .get_package_details(&name, &version)
+                    .get_package_details(&dep_base(&name), &version)
                     .await?
                     .into_result()
                     .map_err(Error::msg)?;
@@ -447,7 +454,7 @@ async fn get_latest_package_version(
     match pkg.get_type() {
         PackageType::Mops { .. } => {
             let latest = service
-                .get_highest_version(&pkg.name)
+                .get_highest_version(&dep_base(&pkg.name))
                 .await?
                 .into_result()
                 .map_err(Error::msg)?;
@@ -530,7 +537,7 @@ async fn download_mops_package(
     bar: Rc<ProgressBar>,
 ) -> Result<()> {
     let ids = service
-        .get_file_ids(&lib, &version)
+        .get_file_ids(&dep_base(&lib), &version)
         .await?
         .into_result()
         .map_err(Error::msg)?;
