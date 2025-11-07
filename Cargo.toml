@@ -2,6 +2,9 @@
 name = "mops-cli"
 version = "0.2.1"
 edition = "2021"
+repository = "https://github.com/prometheus-protocol/mops-cli"
+license = "MIT OR Apache-2.0"
+description = "A Rust client implementation of the Motoko package manager"
 
 [dependencies]
 anyhow = "1.0.86"
